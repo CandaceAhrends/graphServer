@@ -1,0 +1,59 @@
+query ExampleQuery {
+  details{
+    cik
+    ticker
+  }
+}
+
+query  Query {
+  detailsByTicker(ticker: "AAPL"){
+    ticker
+  }
+}
+
+query  Query {
+  availableStocks{
+    ticker
+  }
+}
+
+fragment NameParts on Detail {
+  name
+}
+
+query Query {
+  details {
+    ...NameParts
+    market
+    active
+    locale
+    primary_exchange
+    address {
+      city
+      state
+    }
+    stuff {
+      item
+    }
+  }
+}
+
+query Query {
+  availableDates {
+      date
+  } 
+  volumeByDate(date: "2024-02-22"){
+    volume
+    date
+    ticker
+  }
+   
+}
+[ec2-user@ip-172-31-21-160 ~]$ curl  -X POST \
+  'http://localhost:4000/' \
+  --header 'Accept: */*' \
+  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{"query":" { availableStocks{\n    ticker\n  }\n  }","variables":{"ticker":"AAPL"}}'
+{"data":{"availableStocks":[{"ticker":null},{"ticker":"AAPL"},{"ticker":"TSLA"}]}}
+
